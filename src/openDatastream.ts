@@ -23,7 +23,7 @@ import { URL } from 'url';
 export const openDatastream = async (file: string | Buffer | URL | fs.FileHandle) => {
   // Handle applicably if buffer passed to opener.
   if (Buffer.isBuffer(file)) {
-    const fileFormat = await FileType.fromBuffer(file);
+    const fileFormat = await FileType.fileTypeFromBuffer(file);
     if (fileFormat?.ext === 'exe') {
       const zip = new AdmZip(file); // Extract contents of exe.
       let result = '';
@@ -45,7 +45,7 @@ export const openDatastream = async (file: string | Buffer | URL | fs.FileHandle
     throw new Error('Invalid file type');
   } else if (typeof file === 'string') { // Handle if string (hopefully file path)
     // Determine file extension
-    const fileFormat = await FileType.fromFile(file);
+    const fileFormat = await FileType.fileTypeFromFile(file);
     if (fileFormat?.ext === 'exe') {
       const zip = new AdmZip(file);
       let result = '';
